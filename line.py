@@ -5,7 +5,6 @@
 from decimal import Decimal, getcontext
 from inaccurate_decimal import InaccurateDecimal
 from nonzero import NoNonZeroElements
-
 from vector import Vector
 
 getcontext().prec = 30
@@ -96,7 +95,18 @@ class Line(object):
         a2_coefficient = line.normal_vector[0]
         b2_coefficient = line.normal_vector[1]
         c2_constant = line.constant_term
-
+        
+        """ Given two equtations 
+        
+        a1 + b1 = c1
+        a2 + b2 = c2
+        
+        The determinant is just
+        (a1 * b2) - (a2 * b2)
+        
+        The determinant of X is the same as before but excluding y (a in this case)
+        The determinant of Y is the same as before but excluding x (b in this case)        
+        """
         determinant = (a1_coefficient * b2_coefficient) - \
                       (b1_coefficient * a2_coefficient)
         determinant_x = (c1_constant * b2_coefficient) - \
@@ -204,3 +214,16 @@ class Line(object):
             if not InaccurateDecimal(item).is_near_zero():
                 return k
         raise NoNonZeroElements(Line.NO_NONZERO_ELTS_FOUND_MSG)
+
+
+line1 = Line(Vector([4.046, 2.836]), 1.21)
+line2 = Line(Vector([10.115, 7.09]), 3.025)
+line1.line_relationship(line2)
+
+line3 = Line(Vector([7.204, 3.182]), 8.68)
+line4 = Line(Vector([8.172, 4.114]), 9.883)
+line3.line_relationship(line4)
+
+line5 = Line(Vector([1.182, 5.562]), 6.744)
+line6 = Line(Vector([1.773, 8.343]), 9.525)
+line5.line_relationship(line6)
